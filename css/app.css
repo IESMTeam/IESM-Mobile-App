@@ -345,3 +345,44 @@ textarea, .input { width: 100%; border: 1px solid var(--ap-line); border-radius:
 .step-signed svg { width: 18px; height: 18px; }
 .step-signed span { flex: 1; }
 .step.is-signed .step-head { opacity: .75; }
+
+/* ---------- Check + sign-off feel ---------- */
+.check { transition: background .25s ease; }
+.check .row-title { transition: color .25s ease; }
+.check .tick { transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+.check:active .tick { transform: scale(.88); }
+.check.pop { animation: rowflash .6s ease; }
+.check.pop .tick { animation: tickpop .45s cubic-bezier(.3, 1.6, .5, 1); box-shadow: 0 0 0 0 rgba(52,199,89,.5); }
+.check.pop .tick::after { content: ""; position: absolute; width: 28px; height: 28px; border-radius: 50%; animation: ripple .55s ease-out; }
+.check .tick { position: relative; }
+.check.pop .tick svg path { stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw .3s .08s ease-out forwards; }
+.check.unpop .tick { animation: tickout .25s ease; }
+.check.done .row-title { text-decoration-thickness: 1.5px; }
+@keyframes tickpop { 0% { transform: scale(.6); } 60% { transform: scale(1.22); } 100% { transform: scale(1); } }
+@keyframes tickout { 0% { transform: scale(1); } 50% { transform: scale(.85); } 100% { transform: scale(1); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes ripple { from { box-shadow: 0 0 0 0 rgba(52,199,89,.45); } to { box-shadow: 0 0 0 14px rgba(52,199,89,0); } }
+@keyframes rowflash { 0% { background: #eafaef; } 100% { background: #fff; } }
+.step-ring b { transition: color .2s; }
+.pill.ready { animation: readypulse 1.2s ease 1; }
+@keyframes readypulse { 0% { box-shadow: 0 0 0 0 rgba(0,113,227,.5); transform: scale(1); } 30% { transform: scale(1.06); } 100% { box-shadow: 0 0 0 12px rgba(0,113,227,0); transform: scale(1); } }
+
+.step { position: relative; }
+.step.sealing .step-checks, .step.sealing .step-head, .step.sealing .step-foot { transition: opacity .3s ease; opacity: .25; }
+.step.sealing .ring-fg { stroke: var(--dot-green) !important; stroke-dashoffset: 0 !important; transition: stroke-dashoffset .4s ease; }
+.seal { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: radial-gradient(circle at 50% 45%, rgba(52,199,89,.16), rgba(255,255,255,0) 70%); pointer-events: none; }
+.seal span { width: 64px; height: 64px; border-radius: 50%; background: var(--dot-green); color: #fff; display: grid; place-items: center; animation: stamp .5s cubic-bezier(.3, 1.6, .5, 1) both; box-shadow: 0 8px 24px rgba(52,199,89,.4); }
+.seal span svg { width: 34px; height: 34px; }
+.seal span svg path { stroke-dasharray: 24; stroke-dashoffset: 24; animation: draw .35s .2s ease-out forwards; }
+.seal b { font-size: 17px; color: #1a7a43; animation: rise .35s .25s ease both; }
+@keyframes stamp { 0% { transform: scale(2); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.step.folding { transition: height .3s ease, opacity .3s ease, margin .3s ease; height: 0 !important; opacity: 0; margin-top: 0; }
+@media (prefers-reduced-motion: reduce) { .seal span, .seal b, .check.pop .tick, .check.pop .tick svg path { animation: none !important; stroke-dashoffset: 0 !important; } }
+
+/* ---------- Keep the tab bar pinned ----------
+   The page itself never scrolls — only <main> does. Stops iPhone's
+   rubber-band bounce from dragging the header and tab bar with it. */
+html, body { position: fixed; inset: 0; overflow: hidden; height: 100%; width: 100%; }
+.shell { height: 100dvh; }
+main { overscroll-behavior: contain; min-height: 0; }
+.tabs { position: relative; z-index: 10; }

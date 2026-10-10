@@ -187,6 +187,12 @@ const ACTIONS = {
 app.addEventListener('click', (ev) => {
   const el = ev.target.closest('[data-act]');
   if (!el) return;
+  if (el.dataset.act === 'stepCheck') { steps.tickInPlace(el); return; }
+  if (el.dataset.act === 'stepSign') {
+    if (el.disabled) return;
+    steps.signInPlace(el, () => { ACTIONS.stepSign(el); st.keepScroll = true; render(); });
+    return;
+  }
   const fn = ACTIONS[el.dataset.act];
   if (!fn) return;
   const before = st.screen;

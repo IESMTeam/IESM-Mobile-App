@@ -65,12 +65,12 @@ export function stepCard({ key, stage, pct }, { showItem = true } = {}) {
              <button type="button" class="pill ${all ? 'fill' : 'soft'}" data-act="stepSign" data-k="${esc(key)}" data-s="${stage}" ${all ? '' : 'disabled'}>${ICON.check} ${all ? 'Sign off' : `Sign off · ${s.checks.length - n} left`}</button>
            </div>`;
   return `
-    <section class="step ${signed ? 'is-signed' : ''}">
+    <section class="step ${signed ? 'is-signed' : ''}" data-step="${esc(sid)}">
       <header class="step-head" ${showItem ? `data-act="openItem" data-key="${esc(key)}"` : ''}>
         <span class="step-ring">${ring(signed ? 1 : n / s.checks.length, tone)}<b>${n}</b></span>
         <span class="row-main">
           <span class="row-title">${showItem ? `<span class="key">${esc(key)}</span> · ${esc(s.label)}` : esc(s.label)}</span>
-          <span class="row-sub">${showItem ? esc(it.desc) + ' · ' : ''}${n} of ${s.checks.length} checks · ${esc(it.bay || '')}</span>
+          <span class="row-sub">${showItem ? esc(it.desc) + ' · ' : ''}<span class="step-count">${n} of ${s.checks.length} checks</span> · ${esc(it.bay || '')}</span>
         </span>
         ${avatar(s.owner)}
       </header>
@@ -112,3 +112,72 @@ export const actions = {
   },
   stepClearHold(el) { st.holds[el.dataset.k] = null; st.banner = 'Hold cleared on ' + el.dataset.k; st.keepScroll = true; },
 };
+
+// ---- Feel: haptics + update in place (no page redraw) ----
+
+// Android: vibrate. iPhone Safari has no vibrate, but tapping a native
+// switch gives a system haptic (iOS 18+), so we tap a hidden one.
+let hapticSwitch;
+export function haptic(pattern = 12) {
+  if (navigator.vibrate) { navigator.vibrate(pattern); return; }
+  if (!hapticSwitch) {
+    hapticSwitch = document.createElement('label');
+    hapticSwitch.style.cssText = 'position:fixed;left:-999px;top:0;opacity:0;pointer-events:none';
+    hapticSwitch.innerHTML = '<input type="checkbox" switch>';
+    document.body.appendChild(hapticSwitch);
+  }
+  const times = Array.isArray(pattern) ? Math.ceil(pattern.length / 2) : 1;
+  for (let i = 0; i < times; i++) setTimeout(() => hapticSwitch.click(), i * 90);
+}
+
+// Tick one check without redrawing the page
+export function tickInPlace(el) {
+  const { k, s, i } = el.dataset;
+  const c = checks(k, s);
+  c[i] = !c[i];
+  const on = c[i];
+  haptic(on ? 14 : 6);
+  el.classList.toggle('done', on);
+  el.setAttribute('aria-checked', on ? 'true' : 'false');
+  el.querySelector('.tick').innerHTML = on ? ICON.check : '';
+  el.classList.remove('pop', 'unpop');
+  void el.offsetWidth; // restart the animation
+  el.classList.add(on ? 'pop' : 'unpop');
+
+  // the card around it: ring, count, Sign off button
+  const card = el.closest('.step');
+  const stage = STAGES[stageIndex(s)];
+  const n = doneCount(k, s);
+  const total = stage.checks.length;
+  const all = n === total;
+  if (card) {
+    const fg = card.querySelector('.ring-fg');
+    if (fg) fg.style.strokeDashoffset = String(2 * Math.PI * 15 * (1 - n / total));
+    const ring = card.querySelector('.ring');
+    if (ring && !held(k)) ring.setAttribute('class', 'ring ' + (all ? 'green' : 'blue'));
+    const b = card.querySelector('.step-ring b');
+    if (b) b.textContent = n;
+    const cnt = card.querySelector('.step-count');
+    if (cnt) cnt.textContent = `${n} of ${total} checks`;
+    const sign = card.querySelector('[data-act="stepSign"]');
+    if (sign) {
+      sign.className = 'pill ' + (all ? 'fill' : 'soft');
+      sign.disabled = !all;
+      sign.innerHTML = `${ICON.check} ${all ? 'Sign off' : `Sign off · ${total - n} left`}`;
+      if (all) { sign.classList.add('ready'); haptic([14, 60, 14]); }
+    }
+  }
+  const left = document.getElementById('checksLeft');
+  if (left) left.textContent = String(Number(left.textContent) + (on ? -1 : 1));
+}
+
+// Sign off: stamp the card, buzz, then let the page settle
+export function signInPlace(el, done) {
+  const card = el.closest('.step');
+  haptic([18, 70, 28]);
+  if (!card) return done();
+  card.classList.add('sealing');
+  card.insertAdjacentHTML('beforeend', `<div class="seal"><span>${ICON.check}</span><b>Signed off</b></div>`);
+  setTimeout(() => { card.style.height = card.offsetHeight + 'px'; card.classList.add('folding'); }, 750);
+  setTimeout(done, 1100);
+}

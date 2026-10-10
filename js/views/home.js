@@ -62,7 +62,7 @@ export const screens = {
           <div class="hello-text">
             <div class="hello-date">${esc(today)}</div>
             <h1 class="hello-title">${greeting()}, ${esc(firstName())}</h1>
-            <div class="hello-sub">${left ? `<b>${plural(left, 'check')}</b> left on ${plural(todo.length, 'step')}.` : 'Everything is checked off.'}</div>
+            <div class="hello-sub">${left ? `<b><span id="checksLeft">${left}</span> checks</b> left on ${plural(todo.length, 'step')}.` : 'Everything is checked off.'}</div>
           </div>
           ${weatherHtml()}
         </section>
