@@ -1,28 +1,13 @@
 # IESM Mobile (demo)
 
-Plain HTML / CSS / JavaScript, no frameworks and no build step. Built from the IESM App design canvases (Warehouse, Projects & Field, Shop, plus Purchasing). **All data is sample data** (`js/data.js`) and resets on reload.
+Plain HTML / CSS / JavaScript. Styled and filled to match the IESM Dashboard (same header, Home layout, fonts, and the Pipeline page's sample jobs, people and sites). **All data is sample data** (`js/data.js`).
 
-## How it works
+Passcode **4376** (`js/config.js`). Launch animation → passcode → choose your view (Warehouse, Projects & field, Shop, Purchasing).
 
-1. Launch animation: the IESM mark draws in, fills white, then eases away (tap to skip).
-2. Passcode: **4376** (change it in `js/config.js`).
-3. Choose your view: Warehouse, Projects & field, Shop or Purchasing. Everyone gets Home and Time.
-4. Switch views any time with the ⇄ button in the header. The lock button on the view picker returns to the passcode.
+- Header: search everything (jobs, items, POs, kits, part numbers) and your avatar → **Me** (site switch Nampa / Rupert / Both, switch view, lock).
+- Home: greeting with live weather for your site, Needs attention (Open / Done), Team activity.
+- Warehouse: Receiving and Kitting, with **Scan a label** (camera opens; reading the code is simulated).
+- Shop: shop floor by stage, Shipping with load photos, and **3D models** (same GLBs and viewer as the dashboard; "View in your space" on iPhone).
+- Every project item page: 3D model, stage track, the current stage's checklist from Pipeline, photos.
 
-What works for real on a phone: checklists, taking or uploading photos (camera), finger signature on change orders, and the change-order pricing. The time card and dates are sample values.
-
-## Files
-
-- `index.html`: page shell
-- `css/app.css`: all styles (colors and type from the design canvases)
-- `js/app.js`: screens, navigation, splash, passcode and view picker
-- `js/data.js`: sample jobs, POs, projects, change orders and each view's notifications
-- `js/icons.js`: icons and the IESM mark
-- `js/config.js`: passcode and splash timing
-- `manifest.webmanifest`, `icons/`: home-screen name and icon
-
-## Publishing (GitHub Pages)
-
-Push to the repo; Pages serves it at `https://iesmteam.github.io/IESMMobileApp/`. On a phone, open the link, then Share → Add to Home Screen.
-
-The site is public and the passcode lives in the page code, so it only hides the screens. Keep this to sample data.
+Files: `js/app.js` (shell), `js/store.js` (state), `js/data.js` (sample data), `js/ui.js`, `js/icons.js`, `js/views/*.js` (one per area), `css/app.css`, `models/*.glb`.
