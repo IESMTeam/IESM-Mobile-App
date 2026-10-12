@@ -60,7 +60,7 @@ export const stageIndex = (key) => STAGES.findIndex((s) => s.key === key);
 export const MODELS = {
   BC: { file: 'models/BeltConveyor.glb', name: 'Belt conveyor' },
   SC: { file: 'models/ScrewConveyor.glb', name: 'Screw conveyor' },
-  TD: { file: 'models/ToteDumpTwoStage.glb', name: 'Tote dump, two-stage' },
+  TD: { file: 'models/ToteDumpTwoStage.glb', ios: 'models/ToteDumpTwoStage.usdz', name: 'Tote dump, two-stage' },
   TS: { file: 'models/ToteDumpSingleStage.glb', name: 'Tote dump, single-stage' },
   HP: { file: 'models/HydraulicPowerUnit.glb', name: 'Hydraulic power unit' },
   HC: { file: 'models/HydraulicCylinder.glb', name: 'Hydraulic cylinder' },

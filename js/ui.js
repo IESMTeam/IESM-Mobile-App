@@ -71,10 +71,10 @@ export function photos(listOf, kind, id) {
 }
 
 // 3D model (Google's <model-viewer>, the same one the dashboard uses)
-export function model(file, alt, { tall = false, tag = '', interactive = true } = {}) {
+export function model(file, alt, { tall = false, tag = '', interactive = true, ios = '' } = {}) {
   return `
     <div class="mv ${tall ? 'tall' : ''}">
-      <model-viewer src="${file}" alt="${esc(alt)}" ${interactive ? 'camera-controls' : 'disable-zoom disable-pan'} auto-rotate auto-rotate-delay="0"
+      <model-viewer src="${file}" ${ios ? `ios-src="${ios}"` : ''} autoplay alt="${esc(alt)}" ${interactive ? 'camera-controls' : 'disable-zoom disable-pan'} auto-rotate auto-rotate-delay="0"
         rotation-per-second="12deg" interaction-prompt="none" camera-orbit="30deg 72deg auto" environment-image="neutral"
         exposure="1" shadow-intensity="1" shadow-softness="0.9" ar ar-modes="webxr scene-viewer quick-look" touch-action="pan-y">
         <button slot="ar-button" class="pill fill mv-ar">${ICON.ar} View in your space</button>

@@ -109,7 +109,7 @@ export const screens = {
       const m = MODELS[st.params.type];
       const jobs = ITEMS.filter((i) => i.type === st.params.type);
       return `
-        ${model(m.file, m.name, { tall: true })}
+        ${model(m.file, m.name, { tall: true, ios: m.ios })}
         <div class="small" style="text-align:center">Drag to turn · pinch to zoom</div>
         ${jobs.length ? group('Jobs with this equipment', jobs.length) + list(jobs.map((it) => row({
           icon: 'cube', tone: 'blue', title: `<span class="key">${esc(it.key)}</span> ${esc(it.desc)}`,
