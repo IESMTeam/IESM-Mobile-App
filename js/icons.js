@@ -48,14 +48,20 @@ export const WX = {
   storm: '<path d="M6.5 14h11a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.4 2A3.5 3.5 0 0 0 6.5 14z" fill="#9aa5b4"/><path d="M12 14l-2 4h3l-2 4" stroke="#ffb800" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
 };
 
-// The IESM circle mark (same outline as the launch animation)
-export const MARK_PATH = 'M94.0,172.0 L79.0,172.3 L71.0,171.3 L59.0,168.3 L45.0,162.3 L34.0,155.3 L27.0,149.4 L16.8,138.0 L11.6,130.0 L5.8,118.0 L1.7,104.0 L0.3,92.0 L0.5,79.0 L2.8,66.0 L6.8,54.0 L10.7,46.0 L18.7,34.0 L29.0,22.9 L43.0,12.6 L58.0,5.7 L73.0,1.7 L93.0,-0.0 L233.0,0.0 L233.4,1.0 L228.3,14.0 L215.0,45.7 L101.0,45.7 L83.0,46.7 L74.0,48.7 L68.0,51.5 L57.8,60.0 L51.5,70.0 L48.7,79.0 L48.7,93.0 L51.6,102.0 L56.4,110.0 L65.0,118.3 L75.0,123.3 L84.0,125.3 L97.0,124.3 L105.0,121.4 L114.4,115.0 L122.3,105.0 L126.5,94.0 L127.3,83.0 L124.3,71.0 L119.5,60.0 L120.0,59.0 L164.0,59.3 L165.4,60.0 L167.4,65.0 L170.3,81.0 L170.3,93.0 L169.3,102.0 L167.2,111.0 L163.2,122.0 L155.3,136.0 L145.0,148.2 L131.0,159.3 L122.0,164.2 L112.0,168.2 L94.0,172.0 Z';
+// The IESM logo (exact circles and lines matched to the dashboard favicon): blue ring + grey bar
+export const LOGO_RING = 'M64.7 32H137.3L124.4 65.8H66.5A29.6 29.6 0 1 0 88.68 75.8H124.99A63.4 63.4 0 1 1 64.7 32Z';
+export const LOGO_BAR = 'M148.4 32H189.7L176.8 65.8H135.5Z';
+const LOGO_BOX = '0 31 192 129';
 
+// On dark backgrounds (header, passcode) the ring is white so it stays readable
 export const mark = (cls = 'hdr-logo') =>
-  `<svg class="${cls}" viewBox="-4 -4 242 181" role="img" aria-label="IESM"><path fill="#ffffff" d="${MARK_PATH}"/></svg>`;
+  `<svg class="${cls}" viewBox="${LOGO_BOX}" role="img" aria-label="IESM"><path fill="#ffffff" fill-rule="evenodd" d="${LOGO_RING}"/><path fill="#b4b4b3" d="${LOGO_BAR}"/></svg>`;
 
+// Launch animation on white: outline draws, then fills in the logo colors
 export const splashMark = () => `
-  <svg class="iesm-mark" width="164" height="121" viewBox="-4 -4 242 181" role="img" aria-label="IESM">
-    <path class="iesm-fill" fill="#ffffff" d="${MARK_PATH}"/>
-    <path class="iesm-line" pathLength="1" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" d="${MARK_PATH}"/>
+  <svg class="iesm-mark" width="170" height="114" viewBox="${LOGO_BOX}" role="img" aria-label="IESM">
+    <path class="iesm-fill" fill="#005ca7" fill-rule="evenodd" d="${LOGO_RING}"/>
+    <path class="iesm-fill" fill="#b4b4b3" d="${LOGO_BAR}"/>
+    <path class="iesm-line" pathLength="1" fill="none" stroke="#005ca7" stroke-width="1.5" stroke-linejoin="round" d="${LOGO_RING}"/>
+    <path class="iesm-line" pathLength="1" fill="none" stroke="#b4b4b3" stroke-width="1.5" stroke-linejoin="round" d="${LOGO_BAR}"/>
   </svg>`;

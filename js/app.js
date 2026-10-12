@@ -43,7 +43,7 @@ function badge(k) {
 
 // ---------- splash / lock / views ----------
 function renderSplash() {
-  return `<button type="button" class="splash" data-act="skipSplash" aria-label="Open">${splashMark()}<span class="splash-tag">IESM Mobile</span></button>`;
+  return `<button type="button" class="splash" data-act="skipSplash" aria-label="Open"><span class="splash-inner">${splashMark()}<span class="splash-tag"><b>IESM</b> Mobile</span></span></button>`;
 }
 function renderLock() {
   const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'];

@@ -1,0 +1,18 @@
+{
+  "units": "meters, Y-up on export",
+  "decimate": { "per_part_poly_cap": 2500, "min_ratio": 0.2, "final_pass": { "cylinder_barrels": 0.35, "large_bodies": 0.6 } },
+  "join": "one mesh per moving body (static frame, each stage, each cylinder barrel, each rod)",
+  "bake": { "samples": 96, "margin_px": 16, "ao_distance_m": 0.3, "ao_mix": "0.5 + 0.5*AO",
+            "texture_size": { "large_body": 2048, "cylinder_barrel": 512, "rod": 256 } },
+  "ar_finishes": {
+    "Stainless blasted": { "base": [0.62, 0.62, 0.60], "metallic": 0.8, "roughness": 0.55, "note": "no grain/noise: reads evenly in any lighting" },
+    "Stainless 2B":      { "base": [0.62, 0.62, 0.60], "metallic": 1.0, "roughness": 0.15 },
+    "Stainless satin":   { "metallic": 1.0, "roughness": 0.22 },
+    "Chrome rod":        { "metallic": 1.0, "roughness": 0.07 },
+    "UHMW white":        { "metallic": 0.0, "roughness": 0.55 },
+    "Rubber black":      { "metallic": 0.0, "roughness": 0.80 }
+  },
+  "export": { "glb": "Draco level 6, one 'Scene' animation (split_object off)", "usdz": "Y-up, -Z forward, animation on, under 30 MB",
+              "fps": 30 },
+  "render": { "engine": "Cycles", "view": "AgX Medium High Contrast", "scene": "_Library/Scenes/IESM_Shop.blend" }
+}
